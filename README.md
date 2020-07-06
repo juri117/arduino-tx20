@@ -19,7 +19,12 @@ just wire up directly the cables to the esp as described in the table above.
 Make sure to set ```INVERSE_LOGIC = false``` in the tx20.ini header.
 
 ### for other arduinos
-since the signal voltage is extremely low (~2V) we need an amplifier.
+Since the signal voltage is extremely low (~2V) we need an amplifier.
+Here is the raw signal coming from the tx20 with 5V input (same for 3.3).
+
+![](img/oszillo.jpg)
+
+
 This can be done with a transistor, I had BC639 so I used them, but any one alike should work.
 Make sure to set ```INVERSE_LOGIC = true``` in the tx20.ini header.
 
