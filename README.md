@@ -1,22 +1,35 @@
 # arduino-tx20
+
+- [arduino-tx20](#arduino-tx20)
+  - [wiring](#wiring)
+    - [for esp8266 or esp32](#for-esp8266-or-esp32)
+    - [for other arduinos](#for-other-arduinos)
+  - [run the code](#run-the-code)
+  - [troubleshooting](#troubleshooting)
+  - [notes](#notes)
+
 this as an arduino script that can read and parse the datastream coming from a tx20 wind sensor. It tested on Arduino Pro Mini, Nano and esp8266, esp32.
 
 ## wiring
 
 Here you need to be careful, since I found different color coding for the same sensor in the internet. However the pin order in the plug should be the same for all devices.
 
-| pin | color | function |
-|:--|:--|:--|
-|1|black|serial|
-|2|pink (red)|V+ 3.3-5V|
-|3|green|DTR|
-|4|yellow|GND (yes, yellow -.-)|
+| pin  | color      | function              |
+| :--- | :--------- | :-------------------- |
+| 1    | black      | serial                |
+| 2    | pink (red) | V+ 3.3-5V             |
+| 3    | green      | DTR                   |
+| 4    | yellow     | GND (yes, yellow -.-) |
 
 ![](img/open_sensor.jpg)
 
 ### for esp8266 or esp32
 just wire up directly the cables to the esp as described in the table above.
 Make sure to set ```INVERSE_LOGIC = false``` in the tx20.ini header.
+
+As data-pin use GPIO4 -> D2, the sensors Vin 3.3V. (dont use GPIO2 (D4) since it would prevent the esp from booting)
+
+There is a sample for esp8266 that publishes the sensor-data to a mqtt broker: [tx20_esp8266_mqtt.ino](tx20_esp8266_mqtt/tx20_esp8266_mqtt.ino)
 
 ### for other arduinos
 Since the signal voltage is extremely low (~2V) we need an amplifier.
