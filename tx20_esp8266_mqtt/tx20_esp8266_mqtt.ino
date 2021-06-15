@@ -1,5 +1,5 @@
 /*
-  Created by Juri Bieler, July 3, 2020.
+  Created by Juri, June 15, 2021.
   Released under GPL-2.0 License
 */
 
@@ -47,16 +47,14 @@ void setup() {
 }
 
 void setup_wifi() {
-    WiFi.begin(SSID, PSK);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(100);
-    }
-    Serial.println(WiFi.localIP());
+  WiFi.begin(SSID, PSK);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100);
+  }
+  Serial.println(WiFi.localIP());
 }
 
-void onConnectionEstablished() {
-  Serial.println("mqtt connected!");
-}
+void onConnectionEstablished() { Serial.println("mqtt connected!"); }
 
 void wait_rel_us(uint64_t rel_time_us) {
   delayMicroseconds(rel_time_us - (micros() - time_ref_us));
@@ -144,11 +142,11 @@ boolean parse_data() {
 
 void loop() {
   if (!client.connected()) {
-        while (!client.connected()) {
-            client.connect("weatherGod");
-            delay(100);
-        }
+    while (!client.connected()) {
+      client.connect("weatherGod");
+      delay(100);
     }
+  }
   if ((digitalRead(DATAPIN) && !INVERSE_LOGIC) or
       (!digitalRead(DATAPIN) && INVERSE_LOGIC)) {
     time_ref_us = micros();
@@ -162,7 +160,10 @@ void loop() {
       sprintf(a, "ok,%d,%d", wind_dir, wind_speed);
       Serial.println(a);
       if (millis() > last_sent_ms + MQTT_PUBLISH_INTERVAL_MS) {
-        sprintf(a, "{\"measurements\":[{\"value\":%f,\"type_id\":6},{\"value\": %f,\"type_id\":7}]}", wind_dir/10., wind_speed/10.);
+        sprintf(a,
+                "{\"measurements\":[{\"value\":%f,\"type_id\":6},{\"value\": "
+                "%f,\"type_id\":7}]}",
+                wind_dir / 10., wind_speed / 10.);
         client.publish("3/measurement", a);
         last_sent_ms = millis();
       }

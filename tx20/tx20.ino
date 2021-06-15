@@ -1,5 +1,5 @@
 /*
-  Created by Juri Bieler, July 3, 2020.
+  Created by Juri, July 3, 2020.
   Released under GPL-2.0 License
 */
 

@@ -8,7 +8,7 @@
   - [troubleshooting](#troubleshooting)
   - [notes](#notes)
 
-this as an arduino script that can read and parse the datastream coming from a tx20 wind sensor. It tested on Arduino Pro Mini, Nano and esp8266, esp32.
+this as an arduino script that can read and parse the datastream coming from a tx20 wind sensor. It is tested on Arduino Pro Mini, Nano and esp8266, esp32.
 
 ## wiring
 
