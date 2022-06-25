@@ -25,6 +25,7 @@ uint16_t wind_speed;
 uint16_t wind_dir;
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(DATAPIN, INPUT);
   Serial.begin(115200);
   Serial.println("starting, direction in ddeg, speed in dm/s");
@@ -126,8 +127,10 @@ void loop() {
       Serial.println("fail,could not parse data");
       delay(1000);
     } else {
+      digitalWrite(LED_BUILTIN, HIGH);
       sprintf(a, "ok,%d,%d", wind_dir, wind_speed);
       Serial.println(a);
+      digitalWrite(LED_BUILTIN, LOW);
     }
     delay(10);  // to prevent getting triggered again
     last_event_time_ms = millis();

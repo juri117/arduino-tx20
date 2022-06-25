@@ -24,7 +24,7 @@ const bool VERBOSE = false;
  */
 const bool INVERSE_LOGIC = false;
 
-const unsigned long MQTT_PUBLISH_INTERVAL_MS = 10000;
+const unsigned long MQTT_PUBLISH_INTERVAL_MS = 60000;
 unsigned long last_sent_ms = 0;
 
 const uint32_t NO_DATA_TIMEOUT_MS = 5000;
@@ -38,6 +38,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
   pinMode(DATAPIN, INPUT);
   Serial.begin(115200);
   Serial.println("starting, direction in ddeg, speed in dm/s");
@@ -143,8 +144,11 @@ boolean parse_data() {
 void loop() {
   if (!client.connected()) {
     while (!client.connected()) {
+      Serial.println("try to connect to broker");
       client.connect("weatherGod");
+      digitalWrite(LED_BUILTIN, HIGH);
       delay(100);
+      digitalWrite(LED_BUILTIN, LOW);
     }
   }
   if ((digitalRead(DATAPIN) && !INVERSE_LOGIC) or
@@ -160,12 +164,14 @@ void loop() {
       sprintf(a, "ok,%d,%d", wind_dir, wind_speed);
       Serial.println(a);
       if (millis() > last_sent_ms + MQTT_PUBLISH_INTERVAL_MS) {
+        digitalWrite(LED_BUILTIN, HIGH);
         sprintf(a,
                 "{\"measurements\":[{\"value\":%f,\"type_id\":6},{\"value\": "
                 "%f,\"type_id\":7}]}",
                 wind_dir / 10., wind_speed / 10.);
         client.publish("3/measurement", a);
         last_sent_ms = millis();
+        digitalWrite(LED_BUILTIN, LOW);
       }
     }
     delay(10);  // to prevent getting triggered again
